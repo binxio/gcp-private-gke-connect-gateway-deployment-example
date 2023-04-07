@@ -8,7 +8,7 @@ The [Connect Gateway](https://cloud.google.com/anthos/multicluster-management/ga
 
 For GKE in particular, Connect Gateway is able to connect to your Kubernetes cluster without any additional infrastructure such as bastion hosts, network peering or proxy deployments.
 
-**Remark** Although Connect Gateway is powerfull, it does not [support](https://cloud.google.com/anthos/multicluster-management/gateway/using#run_commands_against_the_cluster the following kubectl commands: `exec`, `proxy`, `attach` and `port-forward`.
+**Remark** Although Connect Gateway is powerfull, it does not [support](https://cloud.google.com/anthos/multicluster-management/gateway/using#run_commands_against_the_cluster) the following kubectl commands: `exec`, `proxy`, `attach` and `port-forward`.
 
 
 ## Terraform integration
