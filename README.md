@@ -44,3 +44,55 @@ resource "google_gke_hub_membership" "example" {
   }
 }
 ```
+
+## Cloud Build integration
+
+This repository includes a [Cloud Build configuration](./cloudbuild/) that deploys a Cloud Build trigger (and depending infrastructure) to deploy an Ubuntu pod. The Ubuntu pod is deployed using `kubectl` and the Connect Gateway API:
+
+```hcl
+resource "google_cloudbuild_trigger" "example_kubectl_deploy" {
+  ...
+  description = "Deploys to a private GKE cluster"
+
+  build {
+    step {
+      name = "google/cloud-sdk:latest"
+      entrypoint = "bash"
+      args = [
+        "-c",
+        <<-EOT
+        gcloud container fleet memberships get-credentials ${google_gke_hub_membership.example.name}
+        
+        kubectl run ubuntu --image ubuntu
+        EOT
+      ]
+    }
+
+    ...
+  }
+}
+```
+
+Note that the Cloud Build Trigger needs the following permissions to be able to deploy Kubernetes resources.
+
+```hcl
+resource "google_project_iam_member" "project_gkehub_viewer_example_cloud" {
+  project = var.project_id
+  role = "roles/gkehub.viewer"
+  member = "serviceAccount:${google_service_account.example_cloudbuild.email}"
+}
+
+resource "google_project_iam_member" "project_gateway_editor_example_cloudbuild" {
+  project = var.project_id
+  role = "roles/gkehub.gatewayEditor"
+  member = "serviceAccount:${google_service_account.example_cloudbuild.email}"
+}
+
+resource "google_project_iam_member" "project_container_developer_example_cloudbuild" {
+  project = var.project_id
+  role = "roles/container.developer"
+  member = "serviceAccount:${google_service_account.example_cloudbuild.email}"
+}
+```
+
+> Sadly these permissions can't (yet?) be configured at the Connect Gateway (GKE Hub Membership) level.
