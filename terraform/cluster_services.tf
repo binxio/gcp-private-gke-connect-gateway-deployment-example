@@ -1,13 +1,13 @@
-resource "kubernetes_pod" "ubuntu" {
+resource "kubernetes_pod" "nginx" {
   metadata {
     namespace = "default"
-    name = "ubuntu"
+    name = "nginx"
   }
 
   spec {
     container {
-      name  = "ubuntu"
-      image = "ubuntu:latest"
+      name  = "nginx"
+      image = "nginx:latest"
     }
   }
 }
