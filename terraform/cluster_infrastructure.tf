@@ -41,10 +41,7 @@ resource "google_container_cluster" "example" {
   }
 
   master_authorized_networks_config {
-    cidr_blocks {
-      display_name = "management"
-      cidr_block   = google_compute_subnetwork.example_nl_mgmt.ip_cidr_range
-    }
+    gcp_public_cidrs_access_enabled = false
   }
 
   workload_identity_config {

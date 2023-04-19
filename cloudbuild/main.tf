@@ -18,17 +18,6 @@ resource "google_compute_network" "example" {
   auto_create_subnetworks = false
 }
 
-resource "google_compute_subnetwork" "example_nl_mgmt" {
-  project = var.project_id
-  network = google_compute_network.example.id
-  region  = "europe-west4"
-  name    = "example-${random_id.example.hex}-nl-mgmt"
-
-  ip_cidr_range = "10.0.0.0/24"
-
-  private_ip_google_access = true
-}
-
 resource "google_compute_subnetwork" "example_nl_gke" {
   project = var.project_id
   network = google_compute_network.example.id
